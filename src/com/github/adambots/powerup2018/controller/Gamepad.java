@@ -254,8 +254,10 @@ public class Gamepad {
 		
 		long matchTime = System.currentTimeMillis() - matchStartTime;
 		
-		if (matchTime == 105000 || matchTime == 130000) {
-			rumble(RUMBLE_MAX, RUMBLE_MAX, 50, 2);
+		if (matchTime == 105000) {
+			rumble(RUMBLE_MAX, RUMBLE_STOP, 50, 2);
+		} else if (matchTime == 130000) {
+			rumble(RUMBLE_STOP, RUMBLE_MAX, 50, 2);
 		}
 		
 	}

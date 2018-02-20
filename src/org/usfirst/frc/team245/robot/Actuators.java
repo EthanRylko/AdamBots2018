@@ -20,7 +20,8 @@ public class Actuators {
 	private static VictorSP leftCarriageMotor;
 	private static VictorSP rightCarriageMotor;
 	private static TalonSRX carriageLiftMotor;
-
+	private static TalonSRX climbMotor;
+	
 	// pneumatics
 	private static DoubleSolenoid leftArmOpenPneumatic;
 	private static DoubleSolenoid leftArmMidPneumatic;
@@ -40,7 +41,15 @@ public class Actuators {
 		leftCarriageMotor = new VictorSP(Constants.LEFT_CARRIAGE_MOTOR_PWM_PORT);
 		rightCarriageMotor = new VictorSP(Constants.RIGHT_CARRIAGE_MOTOR_PWM_PORT);
 		carriageLiftMotor = new TalonSRX(Constants.CARRIAGE_LIFT_MOTOR_PORT);
-		carriageLiftMotor.setNeutralMode(NeutralMode.Brake);
+		climbMotor = new TalonSRX(Constants.CLIMB_MOTOR_PORT);	
+		
+		//Brake Motors
+		carriageLiftMotor.setNeutralMode(NeutralMode.Brake);		
+		//Coast Motors
+		rightFrontMotor.setNeutralMode(NeutralMode.Coast);
+		rightRearMotor.setNeutralMode(NeutralMode.Coast);
+		leftFrontMotor.setNeutralMode(NeutralMode.Coast);
+		leftRearMotor.setNeutralMode(NeutralMode.Coast);
 
 		// initialize pneumatics
 		leftArmOpenPneumatic = new DoubleSolenoid(Constants.LEFT_ARM_OPEN_PNEUMATIC_FORWARD_PORT,
@@ -117,6 +126,10 @@ public class Actuators {
 	public static int getCarriageLiftMotorPosition() {
 		return carriageLiftMotor.getSelectedSensorPosition(Constants.CARRIAGE_LIFT_ENCODER_SENSOR);
 	}
+	
+	public static TalonSRX getClimbMotor() {
+		return climbMotor;
+	}
 
 	public static DoubleSolenoid getLeftArmOpenPneumatic() {
 		return leftArmOpenPneumatic;
@@ -173,12 +186,17 @@ public class Actuators {
 	public static void setRightCarriageMotor(double speed) {
 		rightCarriageMotor.set(capSpeed(speed));
 	}
-
+	
 	// set speed of carriage lift motor
 	public static void setCarriageLiftMotorSpeed(double speed) {
 		carriageLiftMotor.set(ControlMode.PercentOutput , capSpeed(speed));
 	}
 
+	// set speed of climb motor
+	public static void setClimbMotorSpeed(double speed) {
+		climbMotor.set(ControlMode.PercentOutput, capSpeed(speed));
+	}
+		
 	// set left arm first pneumatic position
 	public static void setLeftArmOpenPneumatic(DoubleSolenoid.Value value) {
 		leftArmOpenPneumatic.set(value);
@@ -202,4 +220,5 @@ public class Actuators {
 		rightArmMidPneumatic.set(value);
 		System.out.println("RIGHT ARM MID PNEUMATIC: " + value);
 	}
+	
 }
